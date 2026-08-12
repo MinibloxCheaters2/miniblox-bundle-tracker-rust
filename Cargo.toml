@@ -1,0 +1,28 @@
+[package]
+name = "bundle-tracker-recode"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+oxc_allocator = "0.144.0"
+oxc_ast = "0.144.0"
+oxc_ast_visit = "0.144.0"
+oxc_formatter = { git = "https://github.com/oxc-project/oxc", tag = "crates_v0.144.0" }
+oxc_parser = { version = "0.144.0", features = ["regular_expression"] }
+oxc_semantic = "0.144.0"
+oxc_span = "0.144.0"
+regex = "1"
+ureq = { version = "3", default-features = false, features = ["native-tls", "gzip"] }
+
+[patch.crates-io]
+oxc_allocator = { git = "https://github.com/oxc-project/oxc", tag = "crates_v0.144.0" }
+oxc_ast = { git = "https://github.com/oxc-project/oxc", tag = "crates_v0.144.0" }
+oxc_ast_visit = { git = "https://github.com/oxc-project/oxc", tag = "crates_v0.144.0" }
+oxc_parser = { git = "https://github.com/oxc-project/oxc", tag = "crates_v0.144.0" }
+oxc_semantic = { git = "https://github.com/oxc-project/oxc", tag = "crates_v0.144.0" }
+oxc_span = { git = "https://github.com/oxc-project/oxc", tag = "crates_v0.144.0" }
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+strip = "symbols"

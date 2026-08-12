@@ -1,0 +1,33 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Build release binary
+        run: cargo build --release
+
+      - name: Publish rolling release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          asset="target/release/bundle-tracker.exe"
+          gh release create build "$asset" --latest --title "latest build" --notes "Latest prebuilt binary; downloaded by the tracker's cron workflow." 2>/dev/null \
+            || gh release upload build "$asset" --clobber
+          gh release edit build --latest
