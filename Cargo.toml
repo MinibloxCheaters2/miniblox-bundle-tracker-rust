@@ -3,6 +3,10 @@ name = "bundle-tracker-recode"
 version = "0.1.0"
 edition = "2024"
 
+[[bin]]
+name = "bundle-tracker"
+path = "src/main.rs"
+
 [dependencies]
 oxc_allocator = "0.144.0"
 oxc_ast = "0.144.0"
