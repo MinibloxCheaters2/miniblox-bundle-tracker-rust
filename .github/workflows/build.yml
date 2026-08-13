@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -27,7 +27,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          asset="target/release/bundle-tracker.exe"
-          gh release create build "$asset" --latest --title "latest build" --notes "Latest prebuilt binary; downloaded by the tracker's cron workflow." 2>/dev/null \
-            || gh release upload build "$asset" --clobber
+          asset="target/release/bundle-tracker"
+          gh release delete-asset build bundle-tracker.exe 2>/dev/null || true
+          gh release upload build "$asset" --clobber 2>/dev/null \
+            || gh release create build "$asset" --latest --title "latest build" --notes "Latest prebuilt binary; downloaded by the tracker's cron workflow."
           gh release edit build --latest
